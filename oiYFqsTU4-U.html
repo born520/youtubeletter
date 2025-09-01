@@ -15,11 +15,10 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            transition: padding-bottom 0.3s ease-in-out;  
+            transition: padding-bottom 0.3s ease-in-out;
         }
-         
         body.video-is-sticky {
-            padding-bottom: 290px;  
+            padding-bottom: 290px;
         }
         .container {
             max-width: 800px;
@@ -29,19 +28,17 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
-         
         .video-placeholder {
             width: 100%;
             position: relative;
         }
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%;  
+            padding-bottom: 56.25%;
             height: 0;
             background-color: #000;
             transition: all 0.3s ease-in-out;
         }
-         
         .video-wrapper.sticky {
             position: fixed;
             bottom: 20px;
@@ -60,123 +57,99 @@
             from { transform: translateY(100px) translateX(-50%); opacity: 0; }
             to { transform: translateY(0) translateX(-50%); opacity: 1; }
         }
-         
-
-        #player {  
+        #player {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
         }
-
+         
+        .play-button-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.3s;
+        }
+        .play-button-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .play-icon {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid white;
+        }
+        .play-icon::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 15px 0 15px 26px;
+            border-color: transparent transparent transparent white;
+            margin-left: 5px;
+        }
         .content-area {
             padding: 18px 24px 24px;
         }
         .mute-notice {
-            text-align: center;
-            font-size: 13px;
-            font-weight: 500;
-            color: #1c1e21;
-            margin-bottom: 16px;
-            padding: 8px 12px;
-            background-color: #fffbe6;
-            border: 1px solid #ffe58f;
-            border-radius: 8px;
+            text-align: center; font-size: 13px; font-weight: 500; color: #1c1e21;
+            margin-bottom: 16px; padding: 8px 12px; background-color: #fffbe6;
+            border: 1px solid #ffe58f; border-radius: 8px;
         }
         .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            display: flex; justify-content: center; gap: 15px;
+            margin-bottom: 20px; flex-wrap: wrap;
         }
         .action-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 15px;
-            border: none;
-            cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 12px 20px; border-radius: 8px; text-decoration: none;
+            font-weight: bold; font-size: 15px; border: none; cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .action-button:hover {
-            transform: translateY(-2px);  
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transform: translateY(-2px); box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
-        .action-button svg {
-            margin-right: 8px;
-            width: 20px;
-            height: 20px;
-        }
-        .kakao-button {
-            background-color: #FEE500;
-            color: #191919;
-        }
-        .youtube-button {
-            background-color: #FF0000;
-            color: #ffffff;
-        }
-        .youtube-button svg {
-            fill: #ffffff;
-        }
+        .action-button svg { margin-right: 8px; width: 20px; height: 20px; }
+        .kakao-button { background-color: #FEE500; color: #191919; }
+        .youtube-button { background-color: #FF0000; color: #ffffff; }
+        .youtube-button svg { fill: #ffffff; }
         .description-content {
-            line-height: 1.8;
-            font-size: 16px;
-            color: #333;
-            word-break: keep-all;
+            line-height: 1.8; font-size: 16px; color: #333; word-break: keep-all;
         }
-        
-         
-        .description-content h1,
-        .description-content h2,
-        .description-content h3,
-        .description-content h4,
-        .description-content h5,
-        .description-content h6 {
-            font-size: 1.1em;  
-            font-weight: bold;
-            margin: 20px 0 10px;
+        .description-content h1, .description-content h2, .description-content h3,
+        .description-content h4, .description-content h5, .description-content h6 {
+            font-size: 1.1em; font-weight: bold; margin: 20px 0 10px;
         }
-        .description-content p {
-            font-size: inherit;  
-            margin: 0 0 1em;
-        }
-        .description-content p:last-child {
-            margin-bottom: 0;
-        }
-        .description-content ul,
-        .description-content ol {
-            font-size: inherit;
-            margin: 0 0 1em 20px;
-            padding: 0;
-        }
-        .description-content li {
-            margin-bottom: 0.5em;
-        }
+        .description-content p { font-size: inherit; margin: 0 0 1em; }
+        .description-content p:last-child { margin-bottom: 0; }
+        .description-content ul, .description-content ol { font-size: inherit; margin: 0 0 1em 20px; padding: 0; }
+        .description-content li { margin-bottom: 0.5em; }
 
-
-         
         @media (max-width: 600px) {
             body { padding: 10px; }
-            body.video-is-sticky {
-                padding-bottom: 175px;  
-            }
+            body.video-is-sticky { padding-bottom: 175px; }
             .content-area { padding: 12px 16px 16px; }
             .action-button { width: 100%; font-size: 14px; padding: 14px; }
             .button-container { gap: 10px; }
             .description-content { font-size: 15px; line-height: 1.65; }
             .video-wrapper.sticky {
-                width: 280px; 
-                height: 157.5px;
-                bottom: 15px;
-                right: 15px;
-                left: auto;
-                transform: none;
+                width: 280px; height: 157.5px; bottom: 15px;
+                right: 15px; left: auto; transform: none;
             }
             @keyframes slideIn {
                from { transform: translateY(100px); opacity: 0; }
@@ -187,16 +160,18 @@
 </head>
 <body>
     <div class="container">
-                    <div class="video-placeholder">
+                    <div class="video-placeholder" id="video-placeholder" data-video-id="oiYFqsTU4-U">
                 <div class="video-wrapper">
-                    
                     <div id="player"></div>
+                    <div class="play-button-overlay" id="play-button">
+                        <div class="play-icon"></div>
+                    </div>
                 </div>
             </div>
         
         <div class="content-area">
-            <div class="mute-notice">
-                📢 <strong>영상을 터치</strong>하여 플레이어의 스피커 아이콘 🔊을 눌러야 소리가 켜집니다.
+             <div class="mute-notice">
+                📢 <strong>재생 버튼</strong>을 누르면 소리와 함께 영상이 시작됩니다.
             </div>
 
             <div class="button-container">
@@ -228,55 +203,49 @@
         </div>
     </div>
 
-    
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        
         let player;
+        const playButton = document.getElementById('play-button');
+        
         function onYouTubeIframeAPIReady() {
+            const videoId = document.getElementById('video-placeholder').getAttribute('data-video-id');
+            if (!videoId) {
+                console.error("Video ID not found.");
+                return;
+            }
             player = new YT.Player('player', {
-                height: '100%',
-                width: '100%',
-                videoId: 'oiYFqsTU4-U', 
-                playerVars: {
-                    'autoplay': 1,      
-                    'controls': 1,      
-                    'playsinline': 1,   
-                    'rel': 0,           
-                    'modestbranding': 1 
-                },
-                events: {
-                    'onReady': onPlayerReady
-                }
+                videoId: videoId,
+                playerVars: { 'controls': 1, 'playsinline': 1, 'rel': 0, 'modestbranding': 1 },
+                events: { 'onReady': onPlayerReady }
             });
         }
 
-        
         function onPlayerReady(event) {
-            event.target.mute();      
-            event.target.playVideo(); 
+            playButton.addEventListener('click', () => {
+                player.playVideo();
+                player.unMute();
+                playButton.classList.add('hidden');
+            });
         }
 
-        
         document.addEventListener('DOMContentLoaded', function() {
             const placeholder = document.querySelector('.video-placeholder');
             const videoWrapper = document.querySelector('.video-wrapper');
-
-            if (!placeholder || !videoWrapper) {
-                return;
-            }
+            if (!placeholder || !videoWrapper) return;
 
             let videoHeight = placeholder.offsetHeight;
             let videoTopOffset = placeholder.offsetTop;
 
-            window.onload = () => {
+            const updateVideoDimensions = () => {
                 videoHeight = placeholder.offsetHeight;
                 videoTopOffset = placeholder.offsetTop;
             };
 
-            window.addEventListener('scroll', function() {
-                videoTopOffset = placeholder.offsetTop;
+            window.addEventListener('load', updateVideoDimensions);
+            window.addEventListener('resize', updateVideoDimensions);
 
+            window.addEventListener('scroll', function() {
                 if (window.scrollY > (videoTopOffset + videoHeight)) {
                     if (!videoWrapper.classList.contains('sticky')) {
                         placeholder.style.height = videoHeight + 'px';
