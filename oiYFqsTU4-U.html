@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>유튜브 뉴스레터</title>
     <style>
         body {
@@ -66,26 +63,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: block;
         }
-        .iframe-fallback {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .error-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 16px;
-            text-align: center;
-            z-index: 11;
-        }
-        .play-overlay {
+         
+        .play-button-overlay {
             position: absolute;
             top: 0;
             left: 0;
@@ -99,7 +79,7 @@
             z-index: 10;
             transition: opacity 0.3s;
         }
-        .play-overlay.hidden {
+        .play-button-overlay.hidden {
             opacity: 0;
             pointer-events: none;
         }
@@ -126,7 +106,7 @@
         .content-area {
             padding: 18px 24px 24px;
         }
-        .play-notice {
+        .mute-notice {
             text-align: center; font-size: 13px; font-weight: 500; color: #1c1e21;
             margin-bottom: 16px; padding: 8px 12px; background-color: #fffbe6;
             border: 1px solid #ffe58f; border-radius: 8px;
@@ -162,15 +142,13 @@
 
         @media (max-width: 600px) {
             body { padding: 10px; }
-            body.video-is-sticky { padding-bottom: 190px; }
+            body.video-is-sticky { padding-bottom: 175px; }
             .content-area { padding: 12px 16px 16px; }
             .action-button { width: 100%; font-size: 14px; padding: 14px; }
             .button-container { gap: 10px; }
             .description-content { font-size: 15px; line-height: 1.65; }
             .video-wrapper.sticky {
-                width: 320px;
-                height: 180px;
-                bottom: 15px;
+                width: 280px; height: 157.5px; bottom: 15px;
                 right: 15px; left: auto; transform: none;
             }
             @keyframes slideIn {
@@ -185,18 +163,15 @@
                     <div class="video-placeholder" id="video-placeholder" data-video-id="oiYFqsTU4-U">
                 <div class="video-wrapper">
                     <div id="player"></div>
-                    <div class="play-overlay" id="play-button">
+                    <div class="play-button-overlay" id="play-button">
                         <div class="play-icon"></div>
-                    </div>
-                    <div class="error-message" id="error-message" style="display: none;">
-                        비디오를 로드할 수 없습니다. 새로고침하거나 링크를 확인하세요.
                     </div>
                 </div>
             </div>
         
         <div class="content-area">
-             <div class="play-notice">
-                📢 <strong>재생 버튼</strong>을 눌러 영상을 시작하세요.
+             <div class="mute-notice">
+                📢 <strong>재생 버튼</strong>을 누르면 소리와 함께 영상이 시작됩니다.
             </div>
 
             <div class="button-container">
@@ -228,118 +203,52 @@
         </div>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        
-        function isValidVideoId(videoId) {
-            return /^[a-zA-Z0-9_-]{11}$/.test(videoId);
-        }
-
-        
-        function loadYouTubeAPI() {
-            const script = document.createElement('script');
-            script.src = `https:
-            script.onerror = () => {
-                console.error("YouTube IFrame API load failed, switching to iframe fallback");
-                useIframeFallback();
-            };
-            document.head.appendChild(script);
-        }
-
         let player;
         const playButton = document.getElementById('play-button');
         const placeholder = document.getElementById('video-placeholder');
         const videoWrapper = document.querySelector('.video-wrapper');
-        const errorMessage = document.getElementById('error-message');
 
         function onYouTubeIframeAPIReady() {
             const videoId = placeholder ? placeholder.getAttribute('data-video-id') : null;
-            console.log("Video ID from data attribute:", videoId); 
-            if (!videoId || !isValidVideoId(videoId)) {
-                console.error("Invalid or missing video ID:", videoId);
-                if (errorMessage) errorMessage.style.display = 'block';
-                useIframeFallback(videoId);
+            if (!videoId) {
+                console.error("Video ID not found.");
                 return;
             }
-
-            try {
-                player = new YT.Player('player', {
-                    videoId: videoId,
-                    playerVars: { 
-                        'controls': 1, 
-                        'playsinline': 1, 
-                        'rel': 0, 
-                        'modestbranding': 1
-                    },
-                    events: { 
-                        'onReady': onPlayerReady,
-                        'onStateChange': onPlayerStateChange,
-                        'onError': onPlayerError
-                    }
-                });
-            } catch (e) {
-                console.error("Player initialization failed:", e);
-                useIframeFallback(videoId);
-            }
+            player = new YT.Player('player', {
+                videoId: videoId,
+                playerVars: { 
+                    'controls': 1, 
+                    'playsinline': 1, 
+                    'rel': 0, 
+                    'modestbranding': 1 
+                },
+                events: { 
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
         }
 
         function onPlayerReady(event) {
-            console.log("Player ready, videoId:", event.target.getVideoData().video_id);
-            if (playButton) {
-                playButton.addEventListener('click', () => {
-                    console.log("Play button clicked");
-                    try {
-                        event.target.playVideo();
-                        playButton.classList.add('hidden');
-                    } catch (e) {
-                        console.error("Play failed:", e);
-                        useIframeFallback(event.target.getVideoData().video_id);
-                    }
-                });
-            }
+            
+            playButton.addEventListener('click', () => {
+                player.playVideo();
+                
+            });
 
+            
             initializeScrollTracker();
         }
 
         function onPlayerStateChange(event) {
-            console.log("Player state:", event.data);
-            if (event.data === YT.PlayerState.PLAYING) {
-                if (playButton) playButton.classList.add('hidden');
+            
+            if (event.data == YT.PlayerState.PLAYING) {
+                playButton.classList.add('hidden');
             }
         }
-
-        function onPlayerError(event) {
-            console.error("Player error, code:", event.data);
-            if (errorMessage) errorMessage.style.display = 'block';
-            useIframeFallback(placeholder.getAttribute('data-video-id'));
-        }
-
-        function useIframeFallback(videoId) {
-            if (!videoId || !isValidVideoId(videoId)) {
-                console.error("Invalid videoId for fallback:", videoId);
-                if (errorMessage) errorMessage.style.display = 'block';
-                return;
-            }
-
-            console.log("Switching to iframe fallback for videoId:", videoId);
-            const playerDiv = document.getElementById('player');
-            playerDiv.innerHTML = '';
-            const iframe = document.createElement('iframe');
-            iframe.className = 'iframe-fallback';
-            iframe.src = `https:
-            iframe.frameBorder = '0';
-            iframe.allow = 'encrypted-media';
-            iframe.allowFullscreen = true;
-            playerDiv.appendChild(iframe);
-
-            if (playButton) {
-                playButton.addEventListener('click', () => {
-                    console.log("Play clicked for iframe");
-                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                    playButton.classList.add('hidden');
-                });
-            }
-        }
-
+        
         function initializeScrollTracker() {
             if (!placeholder || !videoWrapper) return;
 
@@ -370,16 +279,7 @@
                 }
             });
         }
-
-        
-        window.addEventListener('load', () => {
-            if (typeof YT === 'undefined' || !YT.Player) {
-                console.warn("YouTube API not loaded, loading...");
-                loadYouTubeAPI();
-            }
-        });
-
-        loadYouTubeAPI();
     </script>
 </body>
 </html>
+
