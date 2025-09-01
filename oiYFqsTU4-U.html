@@ -62,22 +62,27 @@
         }
          
 
-        .video-wrapper iframe {
+        #player {  
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border: none;
         }
+
         .content-area {
             padding: 18px 24px 24px;
         }
         .mute-notice {
             text-align: center;
             font-size: 13px;
-            color: #555;
+            font-weight: 500;
+            color: #1c1e21;
             margin-bottom: 16px;
+            padding: 8px 12px;
+            background-color: #fffbe6;
+            border: 1px solid #ffe58f;
+            border-radius: 8px;
         }
         .button-container {
             display: flex;
@@ -141,7 +146,6 @@
             font-size: inherit;  
             margin: 0 0 1em;
         }
-         
         .description-content p:last-child {
             margin-bottom: 0;
         }
@@ -159,7 +163,6 @@
          
         @media (max-width: 600px) {
             body { padding: 10px; }
-             
             body.video-is-sticky {
                 padding-bottom: 175px;  
             }
@@ -172,10 +175,10 @@
                 height: 157.5px;
                 bottom: 15px;
                 right: 15px;
-                left: auto;  
-                transform: none;  
+                left: auto;
+                transform: none;
             }
-            @keyframes slideIn {  
+            @keyframes slideIn {
                from { transform: translateY(100px); opacity: 0; }
                to { transform: translateY(0); opacity: 1; }
             }
@@ -186,18 +189,14 @@
     <div class="container">
                     <div class="video-placeholder">
                 <div class="video-wrapper">
-                    <iframe 
-                        src="https://www.youtube.com/embed/oiYFqsTU4-U?autoplay=1&amp;mute=1" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
+                    
+                    <div id="player"></div>
                 </div>
             </div>
         
         <div class="content-area">
             <div class="mute-notice">
-                🔊 음소거로 자동재생중입니다. 볼륨을 올려주세요.
+                📢 <strong>영상을 터치</strong>하여 플레이어의 스피커 아이콘 🔊을 눌러야 소리가 켜집니다.
             </div>
 
             <div class="button-container">
@@ -229,7 +228,36 @@
         </div>
     </div>
 
+    
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+        
+        let player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '100%',
+                width: '100%',
+                videoId: 'oiYFqsTU4-U',
+                playerVars: {
+                    'autoplay': 1,      
+                    'controls': 1,      
+                    'playsinline': 1,   
+                    'rel': 0,           
+                    'modestbranding': 1 
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        
+        function onPlayerReady(event) {
+            event.target.mute();      
+            event.target.playVideo(); 
+        }
+
+        
         document.addEventListener('DOMContentLoaded', function() {
             const placeholder = document.querySelector('.video-placeholder');
             const videoWrapper = document.querySelector('.video-wrapper');
@@ -253,13 +281,13 @@
                     if (!videoWrapper.classList.contains('sticky')) {
                         placeholder.style.height = videoHeight + 'px';
                         videoWrapper.classList.add('sticky');
-                        document.body.classList.add('video-is-sticky'); 
+                        document.body.classList.add('video-is-sticky');
                     }
                 } else {
                     if (videoWrapper.classList.contains('sticky')) {
                         videoWrapper.classList.remove('sticky');
                         placeholder.style.height = 'auto';
-                        document.body.classList.remove('video-is-sticky'); 
+                        document.body.classList.remove('video-is-sticky');
                     }
                 }
             });
