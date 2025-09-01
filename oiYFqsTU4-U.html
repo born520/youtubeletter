@@ -15,6 +15,11 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            transition: padding-bottom 0.3s ease-in-out;  
+        }
+         
+        body.video-is-sticky {
+            padding-bottom: 290px;  
         }
         .container {
             max-width: 800px;
@@ -95,7 +100,7 @@
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .action-button:hover {
-            transform: translateY(-2px);
+            transform: translateY(-px);
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
         .action-button svg {
@@ -154,6 +159,10 @@
          
         @media (max-width: 600px) {
             body { padding: 10px; }
+             
+            body.video-is-sticky {
+                padding-bottom: 175px;  
+            }
             .content-area { padding: 12px 16px 16px; }
             .action-button { width: 100%; font-size: 14px; padding: 14px; }
             .button-container { gap: 10px; }
@@ -244,11 +253,13 @@
                     if (!videoWrapper.classList.contains('sticky')) {
                         placeholder.style.height = videoHeight + 'px';
                         videoWrapper.classList.add('sticky');
+                        document.body.classList.add('video-is-sticky'); 
                     }
                 } else {
                     if (videoWrapper.classList.contains('sticky')) {
                         videoWrapper.classList.remove('sticky');
                         placeholder.style.height = 'auto';
+                        document.body.classList.remove('video-is-sticky'); 
                     }
                 }
             });
