@@ -218,8 +218,16 @@
             }
             player = new YT.Player('player', {
                 videoId: videoId,
-                playerVars: { 'controls': 1, 'playsinline': 1, 'rel': 0, 'modestbranding': 1 },
-                events: { 'onReady': onPlayerReady }
+                playerVars: { 
+                    'controls': 1, 
+                    'playsinline': 1, 
+                    'rel': 0, 
+                    'modestbranding': 1 
+                },
+                events: { 
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
             });
         }
 
@@ -228,10 +236,19 @@
             playButton.addEventListener('click', () => {
                 player.playVideo();
                 player.unMute();
-                playButton.classList.add('hidden');
             });
 
             
+            initializeScrollTracker();
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING) {
+                playButton.classList.add('hidden');
+            }
+        }
+        
+        function initializeScrollTracker() {
             if (!placeholder || !videoWrapper) return;
 
             let videoHeight = placeholder.offsetHeight;
@@ -242,11 +259,9 @@
                 videoTopOffset = placeholder.offsetTop;
             };
             
-            
             window.addEventListener('load', updateVideoDimensions);
             window.addEventListener('resize', updateVideoDimensions);
 
-            
             window.addEventListener('scroll', function() {
                 if (window.scrollY > (videoTopOffset + videoHeight)) {
                     if (!videoWrapper.classList.contains('sticky')) {
