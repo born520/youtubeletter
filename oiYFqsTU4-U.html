@@ -66,6 +66,24 @@
             left: 0;
             width: 100%;
             height: 100%;
+            display: block;  
+        }
+        .iframe-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .error-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            z-index: 11;
         }
          
         .unmute-overlay {
@@ -166,12 +184,15 @@
                     <div class="unmute-overlay" id="unmute-button">
                         <div class="unmute-icon"></div>
                     </div>
+                    <div class="error-message" id="error-message" style="display: none;">
+                        비디오를 로드할 수 없습니다. 새로고침하거나 링크를 확인하세요.
+                    </div>
                 </div>
             </div>
         
         <div class="content-area">
              <div class="mute-notice">
-                📢 영상이 자동 재생되지만 음소거 상태입니다. <strong>소리 켜기 버튼</strong>을 누르면 소리가 활성화됩니다. (모바일에서 특히 유용)
+                📢 영상이 자동 재생되지만 음소거 상태입니다. <strong>소리 켜기 버튼</strong>을 누르면 소리가 활성화됩니다.
             </div>
 
             <div class="button-container">
@@ -203,50 +224,68 @@
         </div>
     </div>
 
-    <script src="https://www.youtube.com/iframe_api?noCache=1756709701023"></script>
     <script>
+        
+        const loadYouTubeAPI = () => {
+            const script = document.createElement('script');
+            script.src = `https:
+            script.onerror = () => {
+                console.error("YouTube IFrame API load failed, switching to iframe fallback");
+                useIframeFallback();
+            };
+            document.head.appendChild(script);
+        };
+
         let player;
         const unmuteButton = document.getElementById('unmute-button');
         const placeholder = document.getElementById('video-placeholder');
         const videoWrapper = document.querySelector('.video-wrapper');
+        const errorMessage = document.getElementById('error-message');
 
         function onYouTubeIframeAPIReady() {
             const videoId = placeholder ? placeholder.getAttribute('data-video-id') : null;
+            console.log("Video ID:", videoId); 
             if (!videoId) {
-                console.error("Video ID not found.");
+                console.error("No video ID found");
+                if (errorMessage) errorMessage.style.display = 'block';
                 return;
             }
-            console.log("Initializing YouTube player with videoId:", videoId); 
-            player = new YT.Player('player', {
-                videoId: videoId,
-                playerVars: { 
-                    'controls': 1, 
-                    'playsinline': 1, 
-                    'rel': 0, 
-                    'modestbranding': 1,
-                    'autoplay': 1,  
-                    'mute': 1       
-                },
-                events: { 
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange,
-                    'onError': onPlayerError
-                }
-            });
+
+            try {
+                player = new YT.Player('player', {
+                    videoId: videoId,
+                    playerVars: { 
+                        'controls': 1, 
+                        'playsinline': 1, 
+                        'rel': 0, 
+                        'modestbranding': 1,
+                        'autoplay': 1,
+                        'mute': 1
+                    },
+                    events: { 
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange,
+                        'onError': onPlayerError
+                    }
+                });
+            } catch (e) {
+                console.error("Player initialization failed:", e);
+                useIframeFallback();
+            }
         }
 
         function onPlayerReady(event) {
-            console.log("Player ready, attempting to play video"); 
+            console.log("Player ready, videoId:", event.target.getVideoData().video_id);
             try {
-                event.target.playVideo(); 
+                event.target.playVideo();
             } catch (e) {
                 console.error("Play failed:", e);
+                useIframeFallback();
             }
 
-            
             if (unmuteButton) {
                 unmuteButton.addEventListener('click', () => {
-                    console.log("Unmute button clicked"); 
+                    console.log("Unmute clicked");
                     try {
                         player.unMute();
                         unmuteButton.classList.add('hidden');
@@ -256,29 +295,54 @@
                 });
             }
 
-            
             initializeScrollTracker();
         }
 
         function onPlayerStateChange(event) {
-            console.log("Player state changed:", event.data); 
-            if (event.data == YT.PlayerState.PLAYING) {
+            console.log("Player state:", event.data);
+            if (event.data === YT.PlayerState.PLAYING) {
                 if (unmuteButton) unmuteButton.classList.add('hidden');
-            } else if (event.data == YT.PlayerState.UNSTARTED) {
-                console.log("Video unstarted, retrying play");
+            } else if (event.data === YT.PlayerState.UNSTARTED) {
+                console.log("Video unstarted, retrying");
                 try {
-                    player.playVideo(); 
+                    player.playVideo();
                 } catch (e) {
                     console.error("Retry play failed:", e);
+                    useIframeFallback();
                 }
             }
         }
 
         function onPlayerError(event) {
-            console.error("Player error:", event.data); 
-            
+            console.error("Player error:", event.data);
+            if (errorMessage) errorMessage.style.display = 'block';
+            useIframeFallback();
         }
-        
+
+        function useIframeFallback() {
+            const videoId = placeholder ? placeholder.getAttribute('data-video-id') : null;
+            if (!videoId) return;
+
+            console.log("Switching to iframe fallback for videoId:", videoId);
+            const playerDiv = document.getElementById('player');
+            playerDiv.innerHTML = ''; 
+            const iframe = document.createElement('iframe');
+            iframe.className = 'iframe-fallback';
+            iframe.src = `https:
+            iframe.frameBorder = '0';
+            iframe.allow = 'autoplay; encrypted-media';
+            iframe.allowFullscreen = true;
+            playerDiv.appendChild(iframe);
+
+            
+            if (unmuteButton) {
+                unmuteButton.addEventListener('click', () => {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                    unmuteButton.classList.add('hidden');
+                });
+            }
+        }
+
         function initializeScrollTracker() {
             if (!placeholder || !videoWrapper) return;
 
@@ -313,12 +377,13 @@
         
         window.addEventListener('load', () => {
             if (typeof YT === 'undefined' || !YT.Player) {
-                console.warn("YouTube IFrame API not loaded, retrying...");
-                const script = document.createElement('script');
-                script.src = `https:
-                document.head.appendChild(script);
+                console.warn("YouTube API not loaded, loading...");
+                loadYouTubeAPI();
             }
         });
+
+        
+        loadYouTubeAPI();
 
         
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
