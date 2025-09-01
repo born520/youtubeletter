@@ -66,7 +66,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: block;  
+            display: block;
         }
         .iframe-fallback {
             position: absolute;
@@ -85,7 +85,6 @@
             text-align: center;
             z-index: 11;
         }
-         
         .unmute-overlay {
             position: absolute;
             top: 0;
@@ -115,7 +114,7 @@
             border: 3px solid white;
         }
         .unmute-icon::after {
-            content: '\1F50A';  
+            content: '\1F50A';
             font-size: 40px;
             color: white;
         }
@@ -164,8 +163,8 @@
             .button-container { gap: 10px; }
             .description-content { font-size: 15px; line-height: 1.65; }
             .video-wrapper.sticky {
-                width: 320px;  
-                height: 180px;  
+                width: 320px;
+                height: 180px;
                 bottom: 15px;
                 right: 15px; left: auto; transform: none;
             }
@@ -226,7 +225,12 @@
 
     <script>
         
-        const loadYouTubeAPI = () => {
+        function isValidVideoId(videoId) {
+            return /^[a-zA-Z0-9_-]{11}$/.test(videoId);
+        }
+
+        
+        function loadYouTubeAPI() {
             const script = document.createElement('script');
             script.src = `https:
             script.onerror = () => {
@@ -234,7 +238,7 @@
                 useIframeFallback();
             };
             document.head.appendChild(script);
-        };
+        }
 
         let player;
         const unmuteButton = document.getElementById('unmute-button');
@@ -244,10 +248,11 @@
 
         function onYouTubeIframeAPIReady() {
             const videoId = placeholder ? placeholder.getAttribute('data-video-id') : null;
-            console.log("Video ID:", videoId); 
-            if (!videoId) {
-                console.error("No video ID found");
+            console.log("Video ID from data attribute:", videoId); 
+            if (!videoId || !isValidVideoId(videoId)) {
+                console.error("Invalid or missing video ID:", videoId);
                 if (errorMessage) errorMessage.style.display = 'block';
+                useIframeFallback(videoId); 
                 return;
             }
 
@@ -270,7 +275,7 @@
                 });
             } catch (e) {
                 console.error("Player initialization failed:", e);
-                useIframeFallback();
+                useIframeFallback(videoId);
             }
         }
 
@@ -280,7 +285,7 @@
                 event.target.playVideo();
             } catch (e) {
                 console.error("Play failed:", e);
-                useIframeFallback();
+                useIframeFallback(event.target.getVideoData().video_id);
             }
 
             if (unmuteButton) {
@@ -308,24 +313,27 @@
                     player.playVideo();
                 } catch (e) {
                     console.error("Retry play failed:", e);
-                    useIframeFallback();
+                    useIframeFallback(player.getVideoData().video_id);
                 }
             }
         }
 
         function onPlayerError(event) {
-            console.error("Player error:", event.data);
+            console.error("Player error, code:", event.data);
             if (errorMessage) errorMessage.style.display = 'block';
-            useIframeFallback();
+            useIframeFallback(placeholder.getAttribute('data-video-id'));
         }
 
-        function useIframeFallback() {
-            const videoId = placeholder ? placeholder.getAttribute('data-video-id') : null;
-            if (!videoId) return;
+        function useIframeFallback(videoId) {
+            if (!videoId || !isValidVideoId(videoId)) {
+                console.error("Invalid videoId for fallback:", videoId);
+                if (errorMessage) errorMessage.style.display = 'block';
+                return;
+            }
 
             console.log("Switching to iframe fallback for videoId:", videoId);
             const playerDiv = document.getElementById('player');
-            playerDiv.innerHTML = ''; 
+            playerDiv.innerHTML = '';
             const iframe = document.createElement('iframe');
             iframe.className = 'iframe-fallback';
             iframe.src = `https:
@@ -334,9 +342,9 @@
             iframe.allowFullscreen = true;
             playerDiv.appendChild(iframe);
 
-            
             if (unmuteButton) {
                 unmuteButton.addEventListener('click', () => {
+                    console.log("Unmute clicked for iframe");
                     iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
                     unmuteButton.classList.add('hidden');
                 });
@@ -382,7 +390,6 @@
             }
         });
 
-        
         loadYouTubeAPI();
 
         
