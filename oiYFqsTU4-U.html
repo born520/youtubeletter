@@ -64,45 +64,6 @@
             width: 100%;
             height: 100%;
         }
-         
-        .play-button-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: opacity 0.3s;
-        }
-        .play-button-overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .play-icon {
-            width: 80px;
-            height: 80px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 3px solid white;
-        }
-        .play-icon::after {
-            content: '';
-            display: block;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 15px 0 15px 26px;
-            border-color: transparent transparent transparent white;
-            margin-left: 5px;
-        }
         .content-area {
             padding: 18px 24px 24px;
         }
@@ -163,15 +124,12 @@
                     <div class="video-placeholder" id="video-placeholder" data-video-id="oiYFqsTU4-U">
                 <div class="video-wrapper">
                     <div id="player"></div>
-                    <div class="play-button-overlay" id="play-button">
-                        <div class="play-icon"></div>
-                    </div>
                 </div>
             </div>
         
         <div class="content-area">
              <div class="mute-notice">
-                📢 <strong>재생 버튼</strong>을 누르면 소리와 함께 영상이 시작됩니다.
+                📢 영상 썸네일을 <strong>클릭</strong>하면 소리와 함께 재생됩니다.
             </div>
 
             <div class="button-container">
@@ -206,10 +164,10 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let player;
-        const playButton = document.getElementById('play-button');
         const placeholder = document.getElementById('video-placeholder');
         const videoWrapper = document.querySelector('.video-wrapper');
 
+        
         function onYouTubeIframeAPIReady() {
             const videoId = placeholder ? placeholder.getAttribute('data-video-id') : null;
             if (!videoId) {
@@ -225,29 +183,16 @@
                     'modestbranding': 1 
                 },
                 events: { 
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
+                    'onReady': onPlayerReady
                 }
             });
         }
 
+        
         function onPlayerReady(event) {
-            
-            playButton.addEventListener('click', () => {
-                player.playVideo();
-                
-            });
-
-            
             initializeScrollTracker();
         }
-
-        function onPlayerStateChange(event) {
-            
-            if (event.data == YT.PlayerState.PLAYING) {
-                playButton.classList.add('hidden');
-            }
-        }
+        
         
         function initializeScrollTracker() {
             if (!placeholder || !videoWrapper) return;
@@ -264,19 +209,22 @@
             window.addEventListener('resize', updateVideoDimensions);
 
             window.addEventListener('scroll', function() {
-                if (window.scrollY > (videoTopOffset + videoHeight)) {
-                    if (!videoWrapper.classList.contains('sticky')) {
-                        placeholder.style.height = videoHeight + 'px';
-                        videoWrapper.classList.add('sticky');
-                        document.body.classList.add('video-is-sticky');
+                
+                
+                    if (window.scrollY > (videoTopOffset + videoHeight)) {
+                        if (!videoWrapper.classList.contains('sticky')) {
+                            placeholder.style.height = videoHeight + 'px';
+                            videoWrapper.classList.add('sticky');
+                            document.body.classList.add('video-is-sticky');
+                        }
+                    } else {
+                        if (videoWrapper.classList.contains('sticky')) {
+                            videoWrapper.classList.remove('sticky');
+                            placeholder.style.height = 'auto';
+                            document.body.classList.remove('video-is-sticky');
+                        }
                     }
-                } else {
-                    if (videoWrapper.classList.contains('sticky')) {
-                        videoWrapper.classList.remove('sticky');
-                        placeholder.style.height = 'auto';
-                        document.body.classList.remove('video-is-sticky');
-                    }
-                }
+                
             });
         }
     </script>
