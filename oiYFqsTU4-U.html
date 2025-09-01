@@ -122,12 +122,17 @@
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+        
+        
         var player;
-        const videoId = ""; 
 
+        
         function onYouTubeIframeAPIReady() {
+            
+            const videoId = "";
+            
             if (!videoId) {
-                console.error("Video ID not found.");
+                console.error("Video ID could not be retrieved from the server.");
                 return;
             }
             
