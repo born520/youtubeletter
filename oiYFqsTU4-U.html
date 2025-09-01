@@ -129,7 +129,7 @@
         
         <div class="content-area">
              <div class="mute-notice">
-                📢 영상 썸네일을 <strong>클릭</strong>하면 소리와 함께 재생됩니다.
+                📢 영상 썸네일을 <strong>클릭</strong>하면 재생됩니다.
             </div>
 
             <div class="button-container">
@@ -164,6 +164,7 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let player;
+        let scrollTrackerInitialized = false;
         const placeholder = document.getElementById('video-placeholder');
         const videoWrapper = document.querySelector('.video-wrapper');
 
@@ -183,14 +184,18 @@
                     'modestbranding': 1 
                 },
                 events: { 
-                    'onReady': onPlayerReady
+                    'onStateChange': onPlayerStateChange
                 }
             });
         }
 
         
-        function onPlayerReady(event) {
-            initializeScrollTracker();
+        function onPlayerStateChange(event) {
+            
+            if (event.data == YT.PlayerState.PLAYING && !scrollTrackerInitialized) {
+                initializeScrollTracker();
+                scrollTrackerInitialized = true; 
+            }
         }
         
         
@@ -205,26 +210,24 @@
                 videoTopOffset = placeholder.offsetTop;
             };
             
+            
             window.addEventListener('load', updateVideoDimensions);
             window.addEventListener('resize', updateVideoDimensions);
 
             window.addEventListener('scroll', function() {
-                
-                
-                    if (window.scrollY > (videoTopOffset + videoHeight)) {
-                        if (!videoWrapper.classList.contains('sticky')) {
-                            placeholder.style.height = videoHeight + 'px';
-                            videoWrapper.classList.add('sticky');
-                            document.body.classList.add('video-is-sticky');
-                        }
-                    } else {
-                        if (videoWrapper.classList.contains('sticky')) {
-                            videoWrapper.classList.remove('sticky');
-                            placeholder.style.height = 'auto';
-                            document.body.classList.remove('video-is-sticky');
-                        }
+                if (window.scrollY > (videoTopOffset + videoHeight)) {
+                    if (!videoWrapper.classList.contains('sticky')) {
+                        placeholder.style.height = videoHeight + 'px';
+                        videoWrapper.classList.add('sticky');
+                        document.body.classList.add('video-is-sticky');
                     }
-                
+                } else {
+                    if (videoWrapper.classList.contains('sticky')) {
+                        videoWrapper.classList.remove('sticky');
+                        placeholder.style.height = 'auto';
+                        document.body.classList.remove('video-is-sticky');
+                    }
+                }
             });
         }
     </script>
