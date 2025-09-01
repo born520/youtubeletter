@@ -15,6 +15,10 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            transition: padding-bottom 0.3s ease-in-out;
+        }
+        body.video-is-sticky {
+            padding-bottom: 290px;
         }
         .container {
             max-width: 800px;
@@ -24,13 +28,36 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
+        .video-placeholder {
+            width: 100%;
+            position: relative;
+        }
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%;  
+            padding-bottom: 56.25%;
             height: 0;
             background-color: #000;
+            transition: all 0.3s ease-in-out;
         }
-        .video-wrapper iframe {
+        .video-wrapper.sticky {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 480px; 
+            height: 270px; 
+            padding-bottom: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(100px) translateX(-50%); opacity: 0; }
+            to { transform: translateY(0) translateX(-50%); opacity: 1; }
+        }
+        #player {
             position: absolute;
             top: 0;
             left: 0;
@@ -76,23 +103,24 @@
 
         @media (max-width: 600px) {
             body { padding: 10px; }
+            body.video-is-sticky { padding-bottom: 175px; }
             .content-area { padding: 12px 16px 16px; }
             .action-button { width: 100%; font-size: 14px; padding: 14px; }
             .button-container { gap: 10px; }
             .description-content { font-size: 15px; line-height: 1.65; }
+            .video-wrapper.sticky {
+                width: 280px; height: 157.5px; bottom: 15px;
+                right: 15px; left: auto; transform: none;
+            }
+            @keyframes slideIn {
+               from { transform: translateY(100px); opacity: 0; }
+               to { transform: translateY(0); opacity: 1; }
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-                    <div class="video-wrapper">
-                <iframe 
-                    src="https://www.youtube.com/embed/oiYFqsTU4-U" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
-            </div>
         
         <div class="content-area">
              <div class="mute-notice">
@@ -127,6 +155,76 @@
 <blockquote>시민들의 열정으로 봉수대가 되살아난 것처럼, 양산 동서 간의 소통과 연결을 위한 노력 또한 이어지기를 기대해 봅니다.</blockquote>            </div>
         </div>
     </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let player;
+        let scrollTrackerInitialized = false;
+        const placeholder = document.getElementById('video-placeholder');
+        const videoWrapper = document.querySelector('.video-wrapper');
+
+        
+        function onYouTubeIframeAPIReady() {
+            const videoId = placeholder ? placeholder.getAttribute('data-video-id') : null;
+            if (!videoId) {
+                console.error("Video ID not found.");
+                return;
+            }
+            player = new YT.Player('player', {
+                videoId: videoId,
+                playerVars: { 
+                    'controls': 1, 
+                    'playsinline': 1, 
+                    'rel': 0, 
+                    'modestbranding': 1 
+                },
+                events: { 
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        
+        function onPlayerStateChange(event) {
+            
+            if (event.data == YT.PlayerState.PLAYING && !scrollTrackerInitialized) {
+                initializeScrollTracker();
+                scrollTrackerInitialized = true; 
+            }
+        }
+        
+        
+        function initializeScrollTracker() {
+            if (!placeholder || !videoWrapper) return;
+
+            let videoHeight = placeholder.offsetHeight;
+            let videoTopOffset = placeholder.offsetTop;
+
+            const updateVideoDimensions = () => {
+                videoHeight = placeholder.offsetHeight;
+                videoTopOffset = placeholder.offsetTop;
+            };
+            
+            window.addEventListener('load', updateVideoDimensions);
+            window.addEventListener('resize', updateVideoDimensions);
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > (videoTopOffset + videoHeight)) {
+                    if (!videoWrapper.classList.contains('sticky')) {
+                        placeholder.style.height = videoHeight + 'px';
+                        videoWrapper.classList.add('sticky');
+                        document.body.classList.add('video-is-sticky');
+                    }
+                } else {
+                    if (videoWrapper.classList.contains('sticky')) {
+                        videoWrapper.classList.remove('sticky');
+                        placeholder.style.height = 'auto';
+                        document.body.classList.remove('video-is-sticky');
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>
 
