@@ -117,7 +117,6 @@
             font-size: 16px;
             color: #333;
             word-break: keep-all;
-             
         }
         
          
@@ -134,6 +133,10 @@
         .description-content p {
             font-size: inherit;  
             margin: 0 0 1em;
+        }
+         
+        .description-content p:last-child {
+            margin-bottom: 0;
         }
         .description-content ul,
         .description-content ol {
@@ -153,8 +156,8 @@
             .button-container { gap: 10px; }
             .description-content { font-size: 15px; line-height: 1.65; }
             .video-wrapper.sticky {
-                width: 240px;
-                height: 135px;
+                width: 280px;  
+                height: 157.5px;  
                 bottom: 15px;
                 right: 15px;
             }
@@ -217,18 +220,15 @@
                 return;
             }
 
-            
             let videoHeight = placeholder.offsetHeight;
             let videoTopOffset = placeholder.offsetTop;
 
-            
             window.onload = () => {
                 videoHeight = placeholder.offsetHeight;
                 videoTopOffset = placeholder.offsetTop;
             };
 
             window.addEventListener('scroll', function() {
-                
                 videoTopOffset = placeholder.offsetTop;
 
                 if (window.scrollY > (videoTopOffset + videoHeight)) {
