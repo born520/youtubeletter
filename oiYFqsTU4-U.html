@@ -207,9 +207,11 @@
     <script>
         let player;
         const playButton = document.getElementById('play-button');
-        
+        const placeholder = document.getElementById('video-placeholder');
+        const videoWrapper = document.querySelector('.video-wrapper');
+
         function onYouTubeIframeAPIReady() {
-            const videoId = document.getElementById('video-placeholder').getAttribute('data-video-id');
+            const videoId = placeholder ? placeholder.getAttribute('data-video-id') : null;
             if (!videoId) {
                 console.error("Video ID not found.");
                 return;
@@ -222,16 +224,14 @@
         }
 
         function onPlayerReady(event) {
+            
             playButton.addEventListener('click', () => {
                 player.playVideo();
                 player.unMute();
                 playButton.classList.add('hidden');
             });
-        }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const placeholder = document.querySelector('.video-placeholder');
-            const videoWrapper = document.querySelector('.video-wrapper');
+            
             if (!placeholder || !videoWrapper) return;
 
             let videoHeight = placeholder.offsetHeight;
@@ -241,10 +241,12 @@
                 videoHeight = placeholder.offsetHeight;
                 videoTopOffset = placeholder.offsetTop;
             };
-
+            
+            
             window.addEventListener('load', updateVideoDimensions);
             window.addEventListener('resize', updateVideoDimensions);
 
+            
             window.addEventListener('scroll', function() {
                 if (window.scrollY > (videoTopOffset + videoHeight)) {
                     if (!videoWrapper.classList.contains('sticky')) {
@@ -260,7 +262,7 @@
                     }
                 }
             });
-        });
+        }
     </script>
 </body>
 </html>
