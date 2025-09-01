@@ -30,7 +30,7 @@
             height: 0;
             background-color: #000;
         }
-        #player {
+        .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -85,8 +85,13 @@
 </head>
 <body>
     <div class="container">
-                    <div class="video-wrapper" data-video-id="oiYFqsTU4-U">
-                <div id="player"></div>
+                    <div class="video-wrapper">
+                <iframe 
+                    src="https://www.youtube.com/embed/oiYFqsTU4-U" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
             </div>
         
         <div class="content-area">
@@ -122,31 +127,6 @@
 <blockquote>시민들의 열정으로 봉수대가 되살아난 것처럼, 양산 동서 간의 소통과 연결을 위한 노력 또한 이어지기를 기대해 봅니다.</blockquote>            </div>
         </div>
     </div>
-
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-        let player;
-        
-        function onYouTubeIframeAPIReady() {
-            const videoWrapper = document.querySelector('.video-wrapper');
-            const videoId = videoWrapper ? videoWrapper.getAttribute('data-video-id') : null;
-            
-            if (!videoId) {
-                console.error("Video ID not found.");
-                return;
-            }
-            
-            player = new YT.Player('player', {
-                videoId: videoId,
-                playerVars: { 
-                    'controls': 1, 
-                    'playsinline': 1, 
-                    'rel': 0, 
-                    'modestbranding': 1 
-                }
-            });
-        }
-    </script>
 </body>
 </html>
 
