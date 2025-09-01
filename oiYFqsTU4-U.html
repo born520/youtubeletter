@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유튜브 뉴스레터</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;  
+            height: 0;
+            background-color: #000;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .content-area {
+            padding: 24px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .action-button svg {
+            margin-right: 8px;
+            width: 20px;
+            height: 20px;
+        }
+        .kakao-button {
+            background-color: #FEE500;
+            color: #191919;
+        }
+        .youtube-button {
+            background-color: #FF0000;
+            color: #ffffff;
+        }
+        .youtube-button svg {
+            fill: #ffffff;
+        }
+        .description-content {
+            line-height: 1.8;
+            font-size: 16px;
+            color: #333;
+            word-break: keep-all;
+            white-space: pre-wrap;  
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+                    <div class="video-wrapper">
+                <iframe 
+                    src="https://www.youtube.com/embed/oiYFqsTU4-U?autoplay=1&amp;mute=1" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        
+        <div class="content-area">
+            <div class="button-container">
+                <a href="http://pf.kakao.com/_jmfNn/friend" class="action-button kakao-button" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 4.64c-6.96 0-12.64 4.48-12.64 10.08 0 3.52 2.32 6.64 5.76 8.48l-1.68 5.84 6.24-3.28c.72.08 1.52.16 2.24.16 6.96 0 12.64-4.48 12.64-10.08S22.96 4.64 16 4.64z" fill="#191919"></path></svg>
+                    <span>카카오톡 채널 추가</span>
+                </a>
+                <a href="https://www.youtube.com/@yangsanstory" class="action-button youtube-button" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10,15 L10,9 L15,12 L10,15 Z M21.5,8.1 C21.2,7.3 20.7,6.8 19.9,6.5 C18.3,6 12,6 12,6 C12,6 5.7,6 4.1,6.5 C3.3,6.8 2.8,7.3 2.5,8.1 C2,9.7 2,12 2,12 C2,12 2,14.3 2.5,15.9 C2.8,16.7 3.3,17.2 4.1,17.5 C5.7,18 12,18 12,18 C12,18 18.3,18 19.9,17.5 C20.7,17.2 21.2,16.7 21.5,15.9 C22,14.3 22,12 22,12 C22,12 22,9.7 21.5,8.1 Z"></path></svg>
+                    <span>유튜브 채널 구독</span>
+                </a>
+            </div>
+
+            <div class="description-content">
+                "<h1>주민들의 열정으로 되살아난 원적산 봉수대, 국가 사적으로 지정되다</h1>
+<p>양산시 상북면에 위치한 원적산 봉수대가 지역 주민들의 오랜 노력 끝에 2023년 1월 <strong>국가 사적</strong>으로 지정되었습니다. 이는 부산, 경남을 거쳐 한양까지 이어지는 봉수 체계의 중요한 거점이었던 이곳의 <strong>역사적 중요성을 재조명</strong>하는 계기가 되었습니다.</p>
+
+<h2>원적산과 봉수대의 역사적 가치</h2>
+<p>원적산은 원래 이름이 천성산이었으며, 천 명의 성인이 원효대사의 설법으로 깨달음을 얻었다는 전설에서 유래하여 천성산으로 불리게 되었습니다. 또한, 빼어난 경관 덕분에 <strong>'소금강'</strong>으로 불리기도 했습니다. 이곳에 위치한 봉수대는 밤에는 불꽃, 낮에는 연기로 신호를 전달하는 중요한 통신 시설이었습니다.</p>
+<p>특히, 이 봉수대는 한양으로 향하는 <strong>제1호 직봉 노선</strong>에 포함된 14개의 봉수대 중 하나로, 과거 군사·교통·통신 분야에서 중요한 역할을 수행했습니다.</p>
+
+<h2>지역 주민들의 노력으로 이룬 쾌거</h2>
+<p>원적산 봉수대가 경남도 기념물에서 국가 사적으로 승격되기까지는 지역 주민들의 숨은 노력이 있었습니다. 1987년, 당시 상북면의 젊은 청년들이 주도하여 묻혀 있던 봉수대의 흔적을 찾아내고, 발굴 및 복원 의뢰를 추진했습니다. 이러한 주민들의 자발적인 움직임은 1991년 발굴 보고서가 나온 뒤 경남도 기념물로 지정되는 결실로 이어졌습니다.</p>
+<p>2023년, <strong>위천 봉수대라는 이름으로 국가 사적 제485호로 지정</strong>되면서 그 가치를 공식적으로 인정받게 되었습니다. 이 과정에서 당시 봉화대 창립 회장인 <strong>서춘교 회장</strong>(현 대한노인회 양산 지회장)과 벚나무길 조성에 기여한 <strong>박인주 전 면장</strong>(현 양산 문화원장)과 같은 지역 인사들의 꾸준한 노력이 큰 힘이 되었습니다.</p>
+
+<h2>양산 동서 연결의 과제</h2>
+<p>원적산 봉수대 정상에서 바라본 양산은 남북으로 시가지가 잘 발달되어 있지만, 천성산으로 인해 <strong>동서 지역 간의 연결이 단절</strong>되어 있다는 아쉬움이 남아있습니다. 이러한 동서 간의 이질감을 극복하고 양산을 하나의 생활권으로 통합하기 위해 천성산을 관통하는 <strong>1028번 지방도로 건설</strong>이 추진되고 있습니다. 이 사업은 현재 국지도로의 승격을 검토 중이며, 양산의 지속 가능한 발전을 위해 조속한 추진이 필요한 과제입니다.</p>
+<blockquote>시민들의 열정으로 봉수대가 되살아난 것처럼, 양산 동서 간의 소통과 연결을 위한 노력 또한 이어지기를 기대해 봅니다.</blockquote>"            </div>
+        </div>
+    </div>
+</body>
+</html>
