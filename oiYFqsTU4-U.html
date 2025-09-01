@@ -86,7 +86,25 @@
             font-size: 16px;
             color: #333;
             word-break: keep-all;
-            white-space: pre-wrap;  
+             
+            white-space: pre-wrap; 
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .content-area {
+                padding: 16px;
+            }
+            .action-button {
+                width: 100%;
+                font-size: 14px;
+                padding: 14px;
+            }
+            .button-container {
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -132,3 +150,4 @@
     </div>
 </body>
 </html>
+
