@@ -30,7 +30,7 @@
             height: 0;
             background-color: #000;
         }
-        #player {
+        .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -85,6 +85,14 @@
 </head>
 <body>
     <div class="container">
+                    <div class="video-wrapper">
+                <iframe 
+                    src="https://www.youtube.com/embed/oiYFqsTU4-U" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
         
         <div class="content-area">
              <div class="mute-notice">
@@ -97,7 +105,7 @@
                     <span>카카오톡 채널 추가</span>
                 </a>
                 <a href="https://www.youtube.com/@yangsanstory" class="action-button youtube-button" target="_blank" rel="noopener noreferrer">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10,15 L10,9 L15,12 L10,15 Z M21.5,8.1 C21.2,7.3 20.7,6.8 19.9,6.5 C18.3,6 12,6 12,6 C12,6 5.7,6 4.1,6.5 C3.3,6.8 2.8,7.3 2.5,8.1 C2,9.7 2,12 2,12 C2,12 2,14.3 2.5,15.9 C2.8,16.7 3.3,17.2 4.1,17.5 C5.7,18 12,18 12,18 C12,18 18.3,18 19.9,17.5 C20.7,17.2 21.2,16.7 21.5,15.9 C22,14.3 22,12 22,12 C22,12 22,9.7 21.5,8.1 Z"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10,15 L10,9 L15,12 L10,15 Z M2Iphone 13 pro.5,8.1 C21.2,7.3 20.7,6.8 19.9,6.5 C18.3,6 12,6 12,6 C12,6 5.7,6 4.1,6.5 C3.3,6.8 2.8,7.3 2.5,8.1 C2,9.7 2,12 2,12 C2,12 2,14.3 2.5,15.9 C2.8,16.7 3.3,17.2 4.1,17.5 C5.7,18 12,18 12,18 C12,18 18.3,18 19.9,17.5 C20.7,17.2 21.2,16.7 21.5,15.9 C22,14.3 22,12 22,12 C22,12 22,9.7 21.5,8.1 Z"></path></svg>
                     <span>유튜브 채널 구독</span>
                 </a>
             </div>
@@ -119,34 +127,6 @@
 <blockquote>시민들의 열정으로 봉수대가 되살아난 것처럼, 양산 동서 간의 소통과 연결을 위한 노력 또한 이어지기를 기대해 봅니다.</blockquote>            </div>
         </div>
     </div>
-
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-        
-        
-        var player;
-
-        
-        function onYouTubeIframeAPIReady() {
-            
-            const videoId = "";
-            
-            if (!videoId) {
-                console.error("Video ID could not be retrieved from the server.");
-                return;
-            }
-            
-            player = new YT.Player('player', {
-                videoId: videoId,
-                playerVars: { 
-                    'controls': 1, 
-                    'playsinline': 1, 
-                    'rel': 0, 
-                    'modestbranding': 1 
-                }
-            });
-        }
-    </script>
 </body>
 </html>
 
