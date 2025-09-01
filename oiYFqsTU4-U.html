@@ -41,6 +41,12 @@
         .content-area {
             padding: 24px;
         }
+        .mute-notice {
+            text-align: center;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 20px;
+        }
         .button-container {
             display: flex;
             justify-content: center;
@@ -86,7 +92,6 @@
             font-size: 16px;
             color: #333;
             word-break: keep-all;
-             
             white-space: pre-wrap; 
         }
 
@@ -105,6 +110,10 @@
             .button-container {
                 gap: 10px;
             }
+            .description-content {
+                font-size: 15px;
+                line-height: 1.65;
+            }
         }
     </style>
 </head>
@@ -120,6 +129,10 @@
             </div>
         
         <div class="content-area">
+            <div class="mute-notice">
+                🔊 음소거로 자동재생중입니다. 볼륨을 올려주세요.
+            </div>
+
             <div class="button-container">
                 <a href="http://pf.kakao.com/_jmfNn/friend" class="action-button kakao-button" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 4.64c-6.96 0-12.64 4.48-12.64 10.08 0 3.52 2.32 6.64 5.76 8.48l-1.68 5.84 6.24-3.28c.72.08 1.52.16 2.24.16 6.96 0 12.64-4.48 12.64-10.08S22.96 4.64 16 4.64z" fill="#191919"></path></svg>
