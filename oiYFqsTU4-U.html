@@ -117,8 +117,34 @@
             font-size: 16px;
             color: #333;
             word-break: keep-all;
-            white-space: pre-wrap; 
+             
         }
+        
+         
+        .description-content h1,
+        .description-content h2,
+        .description-content h3,
+        .description-content h4,
+        .description-content h5,
+        .description-content h6 {
+            font-size: 1.1em;  
+            font-weight: bold;
+            margin: 20px 0 10px;
+        }
+        .description-content p {
+            font-size: inherit;  
+            margin: 0 0 1em;
+        }
+        .description-content ul,
+        .description-content ol {
+            font-size: inherit;
+            margin: 0 0 1em 20px;
+            padding: 0;
+        }
+        .description-content li {
+            margin-bottom: 0.5em;
+        }
+
 
         @media (max-width: 600px) {
             body { padding: 10px; }
@@ -198,10 +224,20 @@
                 return;
             }
 
-            const videoHeight = placeholder.offsetHeight;
-            const videoTopOffset = placeholder.offsetTop;
+            
+            let videoHeight = placeholder.offsetHeight;
+            let videoTopOffset = placeholder.offsetTop;
+
+            
+            window.onload = () => {
+                videoHeight = placeholder.offsetHeight;
+                videoTopOffset = placeholder.offsetTop;
+            };
 
             window.addEventListener('scroll', function() {
+                
+                videoTopOffset = placeholder.offsetTop;
+
                 if (window.scrollY > (videoTopOffset + videoHeight)) {
                     if (!videoWrapper.classList.contains('sticky')) {
                         placeholder.style.height = videoHeight + 'px';
