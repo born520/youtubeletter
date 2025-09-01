@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>유튜브 뉴스레터</title>
     <style>
         body {
@@ -137,14 +140,14 @@
 
         @media (max-width: 600px) {
             body { padding: 10px; }
-            body.video-is-sticky { padding-bottom: 175px; }
+            body.video-is-sticky { padding-bottom: 190px; }
             .content-area { padding: 12px 16px 16px; }
             .action-button { width: 100%; font-size: 14px; padding: 14px; }
             .button-container { gap: 10px; }
             .description-content { font-size: 15px; line-height: 1.65; }
             .video-wrapper.sticky {
-                width: 300px;  
-                height: 169px;  
+                width: 320px;  
+                height: 180px;  
                 bottom: 15px;
                 right: 15px; left: auto; transform: none;
             }
@@ -200,7 +203,7 @@
         </div>
     </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://www.youtube.com/iframe_api?noCache=1756709701023"></script>
     <script>
         let player;
         const unmuteButton = document.getElementById('unmute-button');
@@ -213,6 +216,7 @@
                 console.error("Video ID not found.");
                 return;
             }
+            console.log("Initializing YouTube player with videoId:", videoId); 
             player = new YT.Player('player', {
                 videoId: videoId,
                 playerVars: { 
@@ -225,19 +229,30 @@
                 },
                 events: { 
                     'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError
                 }
             });
         }
 
         function onPlayerReady(event) {
-            
+            console.log("Player ready, attempting to play video"); 
+            try {
+                event.target.playVideo(); 
+            } catch (e) {
+                console.error("Play failed:", e);
+            }
 
             
             if (unmuteButton) {
                 unmuteButton.addEventListener('click', () => {
-                    player.unMute();
-                    unmuteButton.classList.add('hidden');
+                    console.log("Unmute button clicked"); 
+                    try {
+                        player.unMute();
+                        unmuteButton.classList.add('hidden');
+                    } catch (e) {
+                        console.error("Unmute failed:", e);
+                    }
                 });
             }
 
@@ -246,9 +261,22 @@
         }
 
         function onPlayerStateChange(event) {
+            console.log("Player state changed:", event.data); 
             if (event.data == YT.PlayerState.PLAYING) {
-                
+                if (unmuteButton) unmuteButton.classList.add('hidden');
+            } else if (event.data == YT.PlayerState.UNSTARTED) {
+                console.log("Video unstarted, retrying play");
+                try {
+                    player.playVideo(); 
+                } catch (e) {
+                    console.error("Retry play failed:", e);
+                }
             }
+        }
+
+        function onPlayerError(event) {
+            console.error("Player error:", event.data); 
+            
         }
         
         function initializeScrollTracker() {
@@ -281,6 +309,16 @@
                 }
             });
         }
+
+        
+        window.addEventListener('load', () => {
+            if (typeof YT === 'undefined' || !YT.Player) {
+                console.warn("YouTube IFrame API not loaded, retrying...");
+                const script = document.createElement('script');
+                script.src = `https:
+                document.head.appendChild(script);
+            }
+        });
 
         
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
