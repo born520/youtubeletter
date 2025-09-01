@@ -38,48 +38,97 @@
             height: 100%;
         }
         .content-area {
-            padding: 18px 24px 24px;
-        }
-        .mute-notice {
-            text-align: center; font-size: 13px; font-weight: 500; color: #1c1e21;
-            margin-bottom: 16px; padding: 8px 12px; background-color: #fffbe6;
-            border: 1px solid #ffe58f; border-radius: 8px;
+            padding: 24px;
         }
         .button-container {
-            display: flex; justify-content: center; gap: 15px;
-            margin-bottom: 20px; flex-wrap: wrap;
+            display: flex; 
+            justify-content: center; 
+            gap: 15px;
+            margin-bottom: 20px; 
+            flex-wrap: wrap;
         }
         .action-button {
-            display: inline-flex; align-items: center; justify-content: center;
-            padding: 12px 20px; border-radius: 8px; text-decoration: none;
-            font-weight: bold; font-size: 15px; border: none; cursor: pointer;
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center;
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            text-decoration: none;
+            font-weight: bold; 
+            font-size: 15px; 
+            border: none; 
+            cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
+            flex-grow: 1;  
+            flex-basis: 0;  
+            text-align: center;
         }
         .action-button:hover {
-            transform: translateY(-2px); box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transform: translateY(-2px); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
-        .action-button svg { margin-right: 8px; width: 20px; height: 20px; }
-        .kakao-button { background-color: #FEE500; color: #191919; }
-        .youtube-button { background-color: #FF0000; color: #ffffff; }
-        .youtube-button svg { fill: #ffffff; }
+        .action-button svg { 
+            margin-right: 8px; 
+            width: 20px; 
+            height: 20px; 
+        }
+        .kakao-button { 
+            background-color: #FEE500; 
+            color: #191919; 
+        }
+        .youtube-button { 
+            background-color: #FF0000; 
+            color: #ffffff; 
+        }
+        .youtube-button svg { 
+            fill: #ffffff; 
+        }
         .description-content {
-            line-height: 1.8; font-size: 16px; color: #333; word-break: keep-all;
+            line-height: 1.8; 
+            font-size: 16px; 
+            color: #333; 
+            word-break: keep-all;
         }
         .description-content h1, .description-content h2, .description-content h3,
         .description-content h4, .description-content h5, .description-content h6 {
-            font-size: 1.1em; font-weight: bold; margin: 20px 0 10px;
+            font-size: 1.1em; 
+            font-weight: bold; 
+            margin: 20px 0 10px;
         }
-        .description-content p { font-size: inherit; margin: 0 0 1em; }
-        .description-content p:last-child { margin-bottom: 0; }
-        .description-content ul, .description-content ol { font-size: inherit; margin: 0 0 1em 20px; padding: 0; }
-        .description-content li { margin-bottom: 0.5em; }
+        .description-content p { 
+            font-size: inherit; 
+            margin: 0 0 1em; 
+        }
+        .description-content p:last-child { 
+            margin-bottom: 0; 
+        }
+        .description-content ul, .description-content ol { 
+            font-size: inherit; 
+            margin: 0 0 1em 20px; 
+            padding: 0; 
+        }
+        .description-content li { 
+            margin-bottom: 0.5em; 
+        }
 
         @media (max-width: 600px) {
-            body { padding: 10px; }
-            .content-area { padding: 12px 16px 16px; }
-            .action-button { width: 100%; font-size: 14px; padding: 14px; }
-            .button-container { gap: 10px; }
-            .description-content { font-size: 15px; line-height: 1.65; }
+            body { 
+                padding: 10px; 
+            }
+            .content-area { 
+                padding: 16px; 
+            }
+            .action-button { 
+                font-size: 14px; 
+                padding: 12px 10px;  
+            }
+            .button-container { 
+                gap: 10px; 
+            }
+            .description-content { 
+                font-size: 15px; 
+                line-height: 1.65; 
+            }
         }
     </style>
 </head>
@@ -95,10 +144,6 @@
             </div>
         
         <div class="content-area">
-             <div class="mute-notice">
-                📢 영상 썸네일을 <strong>클릭</strong>하면 재생됩니다.
-            </div>
-
             <div class="button-container">
                 <a href="http://pf.kakao.com/_jmfNn/friend" class="action-button kakao-button" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 4.64c-6.96 0-12.64 4.48-12.64 10.08 0 3.52 2.32 6.64 5.76 8.48l-1.68 5.84 6.24-3.28c.72.08 1.52.16 2.24.16 6.96 0 12.64-4.48 12.64-10.08S22.96 4.64 16 4.64z" fill="#191919"></path></svg>
