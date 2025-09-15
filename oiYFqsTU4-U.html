@@ -9,8 +9,7 @@
     <meta property="og:title" content="한옥문의 양산한바퀴">
     <meta property="og:image" content="https://i.postimg.cc/rwRmBZ4w/image.jpg">
     <meta property="og:description" content="주민들의 열정으로 되살아난 원적산 봉수대, 국가 사적으로 지정되다
-양산시 상북면에 위치한 원적산 봉수대가 지역 주민들의 오랜 노력 끝에 2023년 1월 국가 사적으로 지정되었습니다. 이는 부산, 경남을 거쳐 한양까지 이어지는 봉수 체계의 중요한 거점이었던 이곳의 역사적 중요성을 재조명하는 계기가 되었습니다.
-">
+양산시 상북면에 위치한 원적산 봉수대가 지역 주민들의 오랜 노력 끝에 2023년 1월 국가 사적으로 지정되었습니다. 이는 부산, 경남을 거쳐 한양까지 이어지는 봉수 체계의 중요한 거점이었던 이곳의 역사적 중요성을 재조명하는 계기가 되었습니다.">
     <title>한옥문의 양산한바퀴</title>
     
     <style>
@@ -49,15 +48,23 @@
         .content-area {
             padding: 24px;
         }
+        .main-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #1c1e21;
+            word-break: keep-all;
+            text-align: center;
+        }
         .button-container {
-            display: flex; 
+            display: flex;
             justify-content: center; 
             gap: 15px;
             margin-bottom: 20px; 
             flex-wrap: wrap;
         }
         .action-button {
-            display: inline-flex; 
+            display: inline-flex;
             align-items: center; 
             justify-content: center;
             padding: 12px 20px; 
@@ -68,74 +75,103 @@
             border: none; 
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            flex-grow: 1;  
-            flex-basis: 0;  
+            flex-grow: 1;
+            flex-basis: 0;
             text-align: center;
         }
         .action-button:hover {
-            transform: translateY(-2px); 
+            transform: translateY(-2px);
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
         .action-button svg { 
-            margin-right: 8px; 
+            margin-right: 8px;
             width: 20px; 
             height: 20px; 
         }
         .kakao-button { 
-            background-color: #FEE500; 
+            background-color: #FEE500;
             color: #191919; 
         }
         .youtube-button { 
-            background-color: #FF0000; 
+            background-color: #FF0000;
             color: #ffffff; 
         }
         .youtube-button svg { 
-            fill: #ffffff; 
+            fill: #ffffff;
         }
         .description-content {
-            line-height: 1.8; 
+            line-height: 1.8;
             font-size: 16px; 
             color: #333; 
             word-break: keep-all;
         }
         .description-content h1, .description-content h2, .description-content h3,
         .description-content h4, .description-content h5, .description-content h6 {
-            font-size: 1.1em; 
+            font-size: 1.1em;
             font-weight: bold; 
             margin: 20px 0 10px;
         }
         .description-content p { 
-            font-size: inherit; 
+            font-size: inherit;
             margin: 0 0 1em; 
         }
         .description-content p:last-child { 
-            margin-bottom: 0; 
+            margin-bottom: 0;
         }
         .description-content ul, .description-content ol { 
-            font-size: inherit; 
+            font-size: inherit;
             margin: 0 0 1em 20px; 
             padding: 0; 
         }
         .description-content li { 
-            margin-bottom: 0.5em; 
+            margin-bottom: 0.5em;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+        }
+        .unmute-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 2px solid white;
+            border-radius: 10px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .unmute-button:hover {
+            background-color: rgba(0, 0, 0, 0.9);
         }
 
         @media (max-width: 600px) {
             body { 
-                padding: 10px; 
+                padding: 10px;
             }
             .content-area { 
-                padding: 16px; 
+                padding: 16px;
+            }
+            .main-title {
+                font-size: 22px;
+                margin-bottom: 16px;
             }
             .action-button { 
-                font-size: 14px; 
-                padding: 12px 10px;  
+                font-size: 14px;
+                padding: 12px 10px;
             }
             .button-container { 
-                gap: 10px; 
+                gap: 10px;
             }
             .description-content { 
-                font-size: 15px; 
+                font-size: 15px;
                 line-height: 1.65; 
             }
         }
@@ -143,23 +179,32 @@
 </head>
 <body>
     <div class="container">
-                    <div class="video-wrapper">
-                <iframe 
-                    src="https://www.youtube.com/embed/oiYFqsTU4-U" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
+                    <div class="video-container">
+                <div class="video-wrapper">
+                    <iframe id="youtube-player"
+                        src="https://www.youtube.com/embed/oiYFqsTU4-U?autoplay=1&amp;mute=1&amp;enablejsapi=1" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <button id="unmute-button" class="unmute-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+                    <span>소리 켜기</span>
+                </button>
             </div>
         
         <div class="content-area">
+                            <h1 class="main-title">주민들의 열정으로 되살아난 원적산 봉수대, 국가 사적으로 지정되다
+양산시 상북면에 위치한 원적산 봉수대가 지역 주민들의 오랜 노력 끝에 2023년 1월 국가 사적으로 지정되었습니다. 이는 부산, 경남을 거쳐 한양까지 이어지는 봉수 체계의 중요한 거점이었던 이곳의 역사적 중요성을 재조명하는 계기가 되었습니다.</h1>
+            
             <div class="button-container">
                 <a href="http://pf.kakao.com/_jmfNn/friend" class="action-button kakao-button" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 4.64c-6.96 0-12.64 4.48-12.64 10.08 0 3.52 2.32 6.64 5.76 8.48l-1.68 5.84 6.24-3.28c.72.08 1.52.16 2.24.16 6.96 0 12.64-4.48 12.64-10.08S22.96 4.64 16 4.64z" fill="#191919"></path></svg>
                     <span>채널 추가</span>
                 </a>
                 <a href="https://www.youtube.com/@yangsanstory" class="action-button youtube-button" target="_blank" rel="noopener noreferrer">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10,15 L10,9 L15,12 L10,15 Z M2Iphone 13 pro.5,8.1 C21.2,7.3 20.7,6.8 19.9,6.5 C18.3,6 12,6 12,6 C12,6 5.7,6 4.1,6.5 C3.3,6.8 2.8,7.3 2.5,8.1 C2,9.7 2,12 2,12 C2,12 2,14.3 2.5,15.9 C2.8,16.7 3.3,17.2 4.1,17.5 C5.7,18 12,18 12,18 C12,18 18.3,18 19.9,17.5 C20.7,17.2 21.2,16.7 21.5,15.9 C22,14.3 22,12 22,12 C22,12 22,9.7 21.5,8.1 Z"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10,15 L10,9 L15,12 L10,15 Z M21.5,8.1 C21.2,7.3 20.7,6.8 19.9,6.5 C18.3,6 12,6 12,6 C12,6 5.7,6 4.1,6.5 C3.3,6.8 2.8,7.3 2.5,8.1 C2,9.7 2,12 2,12 C2,12 2,14.3 2.5,15.9 C2.8,16.7 3.3,17.2 4.1,17.5 C5.7,18 12,18 12,18 C12,18 18.3,18 19.9,17.5 C20.7,17.2 21.2,16.7 21.5,15.9 C22,14.3 22,12 22,12 C22,12 22,9.7 21.5,8.1 Z" fill="white"></path></svg>
                     <span>유튜브 구독</span>
                 </a>
             </div>
@@ -181,6 +226,26 @@
 <blockquote>시민들의 열정으로 봉수대가 되살아난 것처럼, 양산 동서 간의 소통과 연결을 위한 노력 또한 이어지기를 기대해 봅니다.</blockquote>            </div>
         </div>
     </div>
+    <script>
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            const unmuteButton = document.getElementById('unmute-button');
+            if (unmuteButton) {
+                unmuteButton.addEventListener('click', function() {
+                    player.unMute();
+                    unmuteButton.style.display = 'none';
+                });
+            }
+        }
+    </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
-
